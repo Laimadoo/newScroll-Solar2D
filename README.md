@@ -1,4 +1,4 @@
-# EN
+TODO: EN
 ## Module `newScroll.lua`
 
 The `newScroll.lua` module provides functionality for creating and configuring scrollable views in your project. It can be placed anywhere in your project and imported using `require` to access its methods.
