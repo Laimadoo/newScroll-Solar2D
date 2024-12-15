@@ -164,8 +164,6 @@ myScroll:setScrollBarColorSlider(0.7, 0.9, 0.6)
 - Change scroll parameters via the root table, e.g., `myScroll.y`.
 - Use the `path` property to view nested parameters.
 
---- 
-
 
 ---
 ---
