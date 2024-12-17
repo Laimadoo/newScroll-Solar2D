@@ -219,10 +219,6 @@ local myScroll = newScroll({
 
 -- Изменение параметров
 myScroll.y = 300
-
--- Просмотр параметров
-local jp = require("json").prettify
-print(jp(myScroll._path))
 ```
 
 ---
@@ -332,6 +328,5 @@ myScroll:setScrollBarColorSlider(0.7, 0.9, 0.6)
 
 ## Рекомендации
 - Изменяйте параметры скролла через корневую таблицу, например, `myScroll.y`.
-- Для просмотра вложенных параметров используйте свойство `_path`.
-
---- 
+- Просмотривайте параметры скролла так же через корневую таблицу, пример, `print(myScroll.scrollWidth)`
+---
