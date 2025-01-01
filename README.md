@@ -29,6 +29,7 @@ This method creates a scroll object (table) that can be customized using paramet
 | `speedAnimation`      | Speed of animations, including showing/hiding the scrollbar.                                 | Number                        |
 | `scrollBarWidth`      | Width of the scrollbar.                                                                      | Number                        |
 | `scrollBarRounded`    | Corner radius of the scrollbar.                                                              | Number                        |
+| `scrollBarMargin`     | Margin between the scroll edge and the scrollbar.                                            | Number                        |
 | `scrollBarColorBG`    | Background color of the scrollbar. Formats: `{gray}`, `{gray, alpha}`, `{r, g, b}`, `{r, g, b, alpha}`. | Table         |
 | `scrollBarColorSlider`| Color of the scrollbar slider. Formats similar to `scrollBarColorBG`.                        | Table                         |
 
@@ -199,6 +200,7 @@ local newScroll = require("newScroll")
 | `speedAnimation`      | Скорость анимаций, включая появление/скрытие скроллбара.                                       | Число                       |
 | `scrollBarWidth`      | Толщина скроллбара.                                                                           | Число                       |
 | `scrollBarRounded`    | Радиус закругления углов скроллбара.                                                          | Число                       |
+| `scrollBarMargin`    | Отступ между краем скролла скроллбаром.                                                          | Число                       |
 | `scrollBarColorBG`    | Цвет фона скроллбара. Формат: `{gray}`, `{gray, alpha}`, `{r, g, b}`, `{r, g, b, alpha}`.     | Таблица                     |
 | `scrollBarColorSlider`| Цвет ползунка скроллбара. Формат аналогичен `scrollBarColorBG`.                               | Таблица                     |
 
