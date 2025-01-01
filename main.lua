@@ -4,14 +4,15 @@ local centerX, centerY = display.contentCenterX, display.contentCenterY
 local width, height = display.actualContentWidth, display.actualContentHeight
 
 local s = newScroll({
-    width = width,
-    height = height,
+	width = width,
+	height = height,
     x = centerX,
     y = centerY,
     typeScroll = "vertical", -- vertical, horizontal, type3
     effect = "scalePadding", -- nil, bounce, scalePadding, scaleAll, scaleObjects
     friction = 0.972,
     padding = 10,
+    scrollBarMargin = 5,
     isLocked = false,
     isOrder = true,
     isScrollBar = true,
@@ -19,10 +20,9 @@ local s = newScroll({
     scrollBarWidth = 20,
     scrollBarRounded = 10,
     scrollBarColorBG = {0, 0.5},
-    scrollBarColorSlider = {1}
+    scrollBarColorSlider = {0.5, 1, 0.5}
 })
 -- + xScale, yScale, roration
-
 local N = 99
 local i = 0
 timer.performWithDelay(0, function()
