@@ -14,6 +14,7 @@ local changePathKeys = {
     isScrollBar = true,
     scrollBarWidth = true,
     scrollBarRounded = true,
+    scrollBarMargin = true,
     speedAnimation = true,
     typeScroll = true,
     effect = true,
@@ -84,20 +85,29 @@ local setFillColorRGBA = function(obj, r, g, b, a)
 end
 
 -- Переменные константы
-local scrollBarHeightMin = 40
+
 local MIN = 10^-323.6
 
 local resizeScrollBar = function(obj)
+    local scrollBarHeightMin = math.min(
+        display.actualContentWidth,
+        display.actualContentHeight
+    )/10
+
+    local is3type = (obj._path.typeScroll ~= "vertical" and obj._path.typeScroll ~= "horizontal") and true or false
+    local margin = is3type and obj._path.scrollBarMargin or 0
+    local margin2 = is3type and obj._path.scrollBarWidth or 0
+
     local widthScroll = minMax(
         obj._path.width*(obj._path.width/obj._path.scrollWidth),
         scrollBarHeightMin,
-        obj._path.width - obj._path.scrollBarWidth
+        obj._path.width - margin2 - margin
     )
 
     local heightScroll = minMax(
         obj._path.height*(obj._path.height/obj._path.scrollHeight),
         scrollBarHeightMin,
-        obj._path.height - obj._path.scrollBarWidth
+        obj._path.height - margin2 - margin
     )
 
     local posX = map(
@@ -105,7 +115,7 @@ local resizeScrollBar = function(obj)
         0,
         obj._path.scrollWidth - obj._path.width - MIN,
         0,
-        obj._path.width - widthScroll - obj._path.scrollBarWidth
+        obj._path.width - widthScroll - margin2 - margin
     ) - obj._path.width/2 + widthScroll/2
 
     local posY = map(
@@ -113,29 +123,29 @@ local resizeScrollBar = function(obj)
         0,
         obj._path.scrollHeight - obj._path.height - MIN,
         0,
-        obj._path.height - heightScroll - obj._path.scrollBarWidth
+        obj._path.height - heightScroll - margin2 - margin
     ) - obj._path.height/2 + heightScroll/2
 
     local g = obj._scrollBarX
 
-    g[1].x = -obj._path.scrollBarWidth/2
-    g[1].y = obj._path.height/2 - obj._path.scrollBarWidth/2
-    g[1].width = obj._path.width - obj._path.scrollBarWidth
+    g[1].x = -margin2/2 - margin/2
+    g[1].y = obj._path.height/2 - obj._path.scrollBarWidth/2 - obj._path.scrollBarMargin
+    g[1].width = obj._path.width - margin2 - margin
     g[1].height = obj._path.scrollBarWidth
 
     g[2].x = posX
-    g[2].y = obj._path.height/2 - obj._path.scrollBarWidth/2
+    g[2].y = obj._path.height/2 - obj._path.scrollBarWidth/2 - obj._path.scrollBarMargin
     g[2].width = widthScroll
     g[2].height = obj._path.scrollBarWidth
 
     g = obj._scrollBarY
 
-    g[1].x = obj._path.width/2 - obj._path.scrollBarWidth/2
-    g[1].y = -obj._path.scrollBarWidth/2
+    g[1].x = obj._path.width/2 - obj._path.scrollBarWidth/2 - obj._path.scrollBarMargin
+    g[1].y = -margin2/2 - margin/2
     g[1].width = obj._path.scrollBarWidth
-    g[1].height = obj._path.height - obj._path.scrollBarWidth
+    g[1].height = obj._path.height - margin2 - margin
     
-    g[2].x = obj._path.width/2 - obj._path.scrollBarWidth/2
+    g[2].x = obj._path.width/2 - obj._path.scrollBarWidth/2 - obj._path.scrollBarMargin
     g[2].y = posY
     g[2].width = obj._path.scrollBarWidth
     g[2].height = heightScroll
@@ -646,6 +656,10 @@ local scrollBarYFun = function(ev)
         return
     end
 
+    local is3type = (OBJ._path.typeScroll ~= "vertical" and OBJ._path.typeScroll ~= "horizontal") and true or false
+    local margin = is3type and OBJ._path.scrollBarMargin or 0
+    local margin2 = is3type and OBJ._path.scrollBarWidth or 0
+
     if ev.phase == "began" then
         timer.cancel(oc.scrollTimer)
 
@@ -684,13 +698,13 @@ local scrollBarYFun = function(ev)
         ev.target.y = minMax(
             oc.startSBY + (ev.y - ev.yStart),
             -OBJ._path.height/2 + ev.target.height/2,
-            OBJ._path.height/2 - ev.target.height/2 - OBJ._path.scrollBarWidth
+            OBJ._path.height/2 - ev.target.height/2 - margin2 - margin
         )
 
         OBJ._children.y = map(
             -(ev.target.y) - OBJ._path.height/2 + ev.target.height/2,
             0,
-            OBJ._path.height - ev.target.height - OBJ._path.scrollBarWidth,
+            OBJ._path.height - ev.target.height - margin2 - margin,
             0,
             OBJ._path.scrollHeight - OBJ._path.height - MIN
         )
@@ -739,6 +753,10 @@ local scrollBarXFun = function(ev)
         return
     end
 
+    local is3type = (OBJ._path.typeScroll ~= "vertical" and OBJ._path.typeScroll ~= "horizontal") and true or false
+    local margin = is3type and OBJ._path.scrollBarMargin or 0
+    local margin2 = is3type and OBJ._path.scrollBarWidth or 0
+
     if ev.phase == "began" then
         timer.cancel(oc.scrollTimer)
 
@@ -777,13 +795,13 @@ local scrollBarXFun = function(ev)
         ev.target.x = minMax(
             oc.startSBX + (ev.x - ev.xStart),
             -OBJ._path.width/2 + ev.target.width/2,
-            OBJ._path.width/2 - ev.target.width/2 - OBJ._path.scrollBarWidth
+            OBJ._path.width/2 - ev.target.width/2 - margin2 - margin
         )
 
         OBJ._children.x = map(
             -(ev.target.x) - OBJ._path.width/2 + ev.target.width/2,
             0,
-            OBJ._path.width - ev.target.width - OBJ._path.scrollBarWidth,
+            OBJ._path.width - ev.target.width - margin2 - margin,
             0,
             OBJ._path.scrollWidth - OBJ._path.width - MIN
         )
@@ -910,6 +928,8 @@ local changePath = function(obj, key)
         local g = obj._scrollBarY
         g[1].path.radius = obj._path.scrollBarRounded
         g[2].path.radius = obj._path.scrollBarRounded
+    elseif key == "scrollBarMargin" then
+        resizeScrollBar(obj)
     elseif key == "typeScroll" then
         reContent(obj)
     elseif key == "padding" then
@@ -1032,6 +1052,7 @@ local M = function(args)
     op.isScrollBar = setValue(args.isScrollBar, true)
     op.scrollBarWidth = args.scrollBarWidth or 20
     op.scrollBarRounded = args.scrollBarRounded or 0
+    op.scrollBarMargin = args.scrollBarMargin or 5
     op.scrollBarColorBG = setFillColor({}, args.scrollBarColorBG or {0, 0.5})
     op.scrollBarColorSlider = setFillColor({}, args.scrollBarColorSlider or {1})
 
@@ -1061,14 +1082,14 @@ local M = function(args)
 
     display.newRoundedRect(
         OBJ._scrollBarX,
-        -op.scrollBarWidth/2, op.height/2 - op.scrollBarWidth/2,
-        op.width - op.scrollBarWidth, op.scrollBarWidth,
+        -op.scrollBarWidth/2, op.height/2 - op.scrollBarWidth/2 - op.scrollBarMargin,
+        op.width - op.scrollBarWidth - op.scrollBarMargin, op.scrollBarWidth,
         op.scrollBarRounded
     )
     display.newRoundedRect(
         OBJ._scrollBarX,
-        -op.scrollBarWidth/2, op.height/2 - op.scrollBarWidth/2,
-        op.width - op.scrollBarWidth, op.scrollBarWidth,
+        -op.scrollBarWidth/2, op.height/2 - op.scrollBarWidth/2 - op.scrollBarMargin,
+        op.width - op.scrollBarWidth - op.scrollBarMargin, op.scrollBarWidth,
         op.scrollBarRounded
     )
 
@@ -1077,14 +1098,14 @@ local M = function(args)
     OBJ._scrollBarY.isVisible = op.isScrollBar
     display.newRoundedRect(
         OBJ._scrollBarY,
-        op.width/2 - op.scrollBarWidth/2, -op.scrollBarWidth/2,
-        op.scrollBarWidth, op.height - op.scrollBarWidth,
+        op.width/2 - op.scrollBarWidth/2 - op.scrollBarMargin, -op.scrollBarWidth/2,
+        op.scrollBarWidth, op.height - op.scrollBarWidth - op.scrollBarMargin,
         op.scrollBarRounded
     )
     display.newRoundedRect(
         OBJ._scrollBarY,
-        op.width/2 - op.scrollBarWidth/2, -op.scrollBarWidth/2,
-        op.scrollBarWidth, op.height - op.scrollBarWidth,
+        op.width/2 - op.scrollBarWidth/2 - op.scrollBarMargin, -op.scrollBarWidth/2,
+        op.scrollBarWidth, op.height - op.scrollBarWidth - op.scrollBarMargin,
         op.scrollBarRounded
     )
 
